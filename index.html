@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html  lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Live painting</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- external css -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+   crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+   crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.4.0/css/bootstrap-slider.min.css" />
+  <!-- external scripts -->
+  <!-- <script src="libraries\p5.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.4.0/bootstrap-slider.min.js"></script>
+
+	<!-- Custom styles -->
+  <link rel="stylesheet" media="screen" href="css/01-main.css" />
+  <!-- <link rel="stylesheet" media="screen" href="libraries/bootstrap-slider-master/css/bootstrap-slider.css" /> -->
+  
+	<!-- Custom scripts -->
+  <script src="js/painter/main.js"></script>
+  <script src="js/painter/main_bubble.js"></script>
+
+</head>
+
+<body>
+  <!--Navigation-->
+  <nav>
+    <div class="nav-toggle" id="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-modal" id="nav-modal">
+      <div class="nav-modal__contents" id="nav-modal__contents">
+          <form class="nav-form">
+              <div class="nav-form__group">
+                <label for="size" class="nav-form__group__label">Field input: </label>
+                <div class="nav-form__group__value"></div>
+                <div class="nav-form__group__input">
+                  <input type="email" class="form-input" id="inputEmail3" placeholder="Email">
+                </div>
+              </div>
+              <div class="nav-form__group">
+                  <label for="size" class="nav-form__group__label">Presets: </label>
+                  <div class="nav-form__group__value"></div>
+                  <div class="nav-form__group__input">
+                    <select class="form-input">
+                      <option>Default</option>
+                      <option>Yellow painting</option>
+                      <option>No.5</option>
+                      <option>Mural</option>
+                      <option>Colour streaks</option>
+                    </select>
+                  </div>
+                </div>
+              <div class="nav-form__group">
+                <label for="_size" class="nav-form__group__label">Size: </label>
+                <div class="nav-form__group__value">3:32</div>
+                <div class="nav-form__group__input nav-form__group__input--slider">
+                    <input class="span2" 
+                    id="_size" type="text" />
+                </div>
+              </div>
+              <div class="nav-form__group">
+                <label for="_roundness" class="nav-form__group__label">Roundness: </label>
+                <div class="nav-form__group__value">3:32</div>
+                <div class="nav-form__group__input nav-form__group__input--slider">
+                    <input class="span2" 
+                    id="_roundness" type="text" />
+                </div>
+              </div>
+              <div class="nav-form__group">
+                <label for="_rotation" class="nav-form__group__label">Rotation: </label>
+                <div class="nav-form__group__value">3:32</div>
+                <div class="nav-form__group__input nav-form__group__input--slider">
+                    <input class="span2" 
+                    id="_rotation" type="text" />
+                </div>
+              </div>
+              <div class="nav-form__group">
+                <label for="_opacity" class="nav-form__group__label">Opacity: </label>
+                <div class="nav-form__group__value">off</div>
+                <div class="nav-form__group__input nav-form__group__input--slider">
+                    <input class="span2" 
+                    id="_opacity" type="text" />
+                </div>
+              </div>
+              <div class="nav-form__group">
+                <label for="_stroke" class="nav-form__group__label">Stroke: </label>
+                <div class="nav-form__group__value">3:32</div>
+                <div class="nav-form__group__input nav-form__group__input--slider">
+                    <input class="span2" 
+                    id="_stroke" type="text" />
+                </div>
+              </div>
+              <div class="nav-form__group">
+                  <label for="_quantity" class="nav-form__group__label">Quantity: </label>
+                  <div class="nav-form__group__value">3:32</div>
+                  <div class="nav-form__group__input nav-form__group__input--slider">
+                      <input class="span2" 
+                      id="_quantity" type="text" />
+                  </div>
+                </div>
+
+              
+              <!-- <fieldset class="form-group">
+                <div class="row">
+                  <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+                      <label class="form-check-label" for="gridRadios1">
+                        First radio
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                      <label class="form-check-label" for="gridRadios2">
+                        Second radio
+                      </label>
+                    </div>
+                    <div class="form-check disabled">
+                      <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled>
+                      <label class="form-check-label" for="gridRadios3">
+                        Third disabled radio
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </fieldset> -->
+              <!-- <div class="form-group row">
+                <div class="col-sm-2">Checkbox</div>
+                <div class="col-sm-10">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gridCheck1">
+                    <label class="form-check-label" for="gridCheck1">
+                      Example checkbox
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary">Sign in</button>
+                </div>
+              </div> -->
+            </form>
+          <!-- <form>
+            <div class="form-group form-row">
+              <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+              <div class="col-sm-8">
+                <select class="form-control form-control-sm" id="dropdown">
+                    <option>Small select 1</option>
+                    <option>Small select 2</option>
+                </select>
+              </div>
+            </div>
+          </form> -->
+        
+        <!-- <form>
+          <div class="form-group row">
+            <div class="form-group">
+              <label for="dropdown" class="col-sm-2 col-form-label">Email</label>
+              <div class="col-sm-10">
+                <select class="form-control form-control-sm" id="dropdown">
+                    <option>Small select 1</option>
+                    <option>Small select 2</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form> -->
+
+      </div>
+    </div>
+  </nav>
+
+  <!--external scripts 1-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+  <script src="libraries/bootstrap-slider-master/bootstrap-slider.js"></script>
+
+
+  <!--custom scripts-->
+  <script src="js/painter/toggle.js"></script>
+  <script src="js/painter/main_settings.js"></script>
+  <script src="js/painter/hex2hsl.js"></script>
+
+  <!--initialize scripts-->
+  <script>
+    window.addEventListener("load", function(event) {
+      navigation.init();
+    });
+  </script>
+</body>
+
+</html>
