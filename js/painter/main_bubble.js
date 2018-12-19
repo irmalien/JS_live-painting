@@ -28,7 +28,7 @@ class Bubble {
     else {this.variation = 'C'}
 
     //color
-    this.colorScheme = color[4].palette;
+    this.colorScheme = color[3].palette;
     this.randomColor = int(random(0, this.colorScheme.length));
 
     this.h = this.colorScheme[this.randomColor][0];
@@ -42,8 +42,9 @@ class Bubble {
   }
   move(){
     // this.moveDiog();
+
     this.movePerlinNoise();
-    this.moveStyleA();
+    // this.moveStyleA();
     // this.moveDiog();
     this.bounce();
     this.changeRadius();
@@ -72,8 +73,8 @@ class Bubble {
   movePerlinNoise(){
     // this.x = this.x + map(noise(this.xoff1), 0, 1, -width/2, width*1.5);
     // this.y = this.y + map(noise(this.xoff2), 0, 1, -height/2, height*1.5);
-    this.x = this.x + map(noise(this.xoff1), 0, 1, -0.5, 0.5);
-    this.y = this.y + map(noise(this.xoff2), 0, 1, -0.5, 0.5);
+    this.x = this.x + map(noise(this.xoff1), 0, 1, -5, 5);
+    this.y = this.y + map(noise(this.xoff2), 0, 1, -1, 1);
     // this.x = map(noise(this.xoff1), 0, 1, 0, width);
     // this.y = map(noise(this.xoff2), 0, 1, 0, height);
     this.xoff1 += this.increment;
@@ -110,10 +111,13 @@ class Bubble {
     noStroke()
     // strokeWeight(this.strokeWeight);
     // noFill();
-    this.colorShadesNoise()
+    this.colorShadesNoise();
     this.alphaShades();
-    fill(this.h_shade, this.s_shade, this.l_shade, this.a)
+    this.colorImage();
+    fill(this.h_shade, this.s_shade, this.l_shade += random(-2, 2), this.a_shade)
     // fill(255);
+    var radius_local = map(this.l_shade, 30, 100, 0, 3)
+    this.radius = (this.radius+radius_local)/2
     ellipse(this.x, this.y, this.radius, this.radius);
   }
 
@@ -162,6 +166,17 @@ class Bubble {
     if (this.s < 0) this.s = 0;
     if (this.l > 90) this.l = 90;
     if (this.l < 15) this.l = 15;
+  }
+
+  colorImage(){
+    var col = img.get(this.x, this.y);
+    var r = col[0];
+    var g = col[1];
+    var b = col[2];
+    var col2 = r+g+b
+    var col3 = col2/3
+    var l_shadeLocal = map(col3, 100, 255, 0, 100)
+    this.l_shade = (this.l_shade+l_shadeLocal)/2
   }
 
   bounce(){

@@ -1,11 +1,10 @@
 const windowWidth = document.documentElement.clientWidth-17;
 const windowHeight = document.documentElement.clientHeight-17;
 
-const canvasW = windowWidth //4400; //windowWidth //800 //4400; //2200
-const canvasH = windowHeight //2616; //windowHeight //800 //2616; //1308
+const canvasW = 1000//5606 //1000 //4400; //windowWidth //800 //4400; //2200
+const canvasH = 667 //3737 //667 //2616; //windowHeight //800 //2616; //1308
 
 let count = 0;
-let count1 = 0;
 
 const color = [
   //Purvitis
@@ -57,9 +56,9 @@ const color = [
 const bubble = {
   array: [],
   //OBJECT
-  quantity: 4000,
-  minSize: 0.4,
-  maxSize: 0.4,
+  quantity: 1,
+  minSize: 1,
+  maxSize: 10,
   // roundness: 1,
   // minStroke: 1, 
   // maxStroke: 10, 
@@ -78,10 +77,9 @@ const bubble = {
   movement: 1,
 };
 
-function randomize() {
 
-}
-
+function randomize() {}
+  
 function relativeSize(){
   const relativeSize = canvasW/1000;
   bubble.minSize = bubble.minSize * relativeSize;
@@ -89,9 +87,12 @@ function relativeSize(){
   bubble.movement = bubble.movement * relativeSize;
 }
 
+function preload(){
+  img = loadImage('img/gustavs.jpg')
+}
 
 function setup(){
-  colorMode(HSB, 360, 100, 100);
+  colorMode(HSB, 360, 100, 100, 100);
   createCanvas(canvasW, canvasH);
   background(0, 0, 0);
   relativeSize();
