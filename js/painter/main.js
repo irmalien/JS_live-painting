@@ -1,57 +1,10 @@
 const windowWidth = document.documentElement.clientWidth-17;
 const windowHeight = document.documentElement.clientHeight-17;
 
-const canvasW = 1000//5606 //1000 //4400; //windowWidth //800 //4400; //2200
-const canvasH = 667 //3737 //667 //2616; //windowHeight //800 //2616; //1308
+const canvasW = 1000  //5606 //1000 //4400; //windowWidth //2200
+const canvasH = 667   //3737 //667 //2616; //windowHeight //1308
 
 let count = 0;
-
-const color = [
-  //Purvitis
-  {palette: [
-    [0, 0, 100],
-    [26, 13, 99],
-    [345, 5, 92],
-    [21, 13, 91],
-    [210, 6, 82],
-    [211, 19, 76],
-    [21, 53, 89],
-    [35, 84, 94],
-    [23, 91, 85],
-    [356, 25, 75],
-    [323, 11, 75],
-    ]},
-  //greyscale
-  {palette: [
-    [51, 11, 71],
-    [51, 11, 46],
-    [51, 11, 96],
-    [51, 11, 21],
-    [51, 11, 86],
-    ]},
-  //2: Greyscale Orange
-  {palette: [
-    [207, 45, 25],
-    [160, 24, 35],
-    [76, 16, 65],
-    [36, 27, 85],
-    [20, 88, 96],
-    [35, 15, 95],
-    ]},
-  //3: Pollock nr5  
-  {palette: [
-    [45, 65, 95],
-    [360, 70, 40],
-    [280, 20, 6],
-    [40, 10, 55],
-    [35, 15, 95],
-    [355, 85, 65],
-    ]},
-  //4: white  
-  {palette: [
-    [0, 0, 100],
-    ]}  
-  ]
 
 const bubble = {
   array: [],
@@ -74,11 +27,9 @@ const bubble = {
   alphaMax: 1.0,
 
   //MOVEMENT - 1 is normal , less is faster, more is slower
-  movement: 1,
+  movement: 3,
 };
 
-
-function randomize() {}
   
 function relativeSize(){
   const relativeSize = canvasW/1000;
@@ -95,18 +46,7 @@ function setup(){
   colorMode(HSB, 360, 100, 100, 100);
   createCanvas(canvasW, canvasH);
   background(0, 0, 0);
-  relativeSize();
 
-  // let hex = '#ddffdd' //45 65 95
-  // hsl = rgbToHsl(242, 203, 85);
-  // let hsl = hexToHSL(hex);
-  // console.log(hsl);
-
-  // for(i = 0; i < bubble.quantity; i++ ){
-  //   bubble.array[i] = 
-  //   new Bubble(random(0, width), random(0, height), random(bubble.minSize, bubble.maxSize), 
-  //   bubble.alphaMin, bubble.alphaMax);
-  // }
 }
 
 
@@ -116,8 +56,7 @@ function draw() {
   }
   else if(bubble.array.length<bubble.quantity){
     bubble.array.push(
-      new Bubble(random(0, width), random(0, height), random(bubble.minSize, bubble.maxSize), 
-      bubble.alphaMin, bubble.alphaMax))
+      new Bubble(random(0, width), random(0, height), random(bubble.minSize, bubble.maxSize)))
   }
 
   for(i = 0; i < bubble.array.length; i++ ){
@@ -129,13 +68,11 @@ function draw() {
 function mouseClicked() {
   bubble.quantity++;
   bubble.array.push(
-    new Bubble(mouseX, mouseY, random(bubble.minSize, bubble.maxSize), 
-    bubble.alphaMin, bubble.alphaMax))
+    new Bubble(mouseX, mouseY, random(bubble.minSize, bubble.maxSize)))
 }
 
 function mouseDragged() {
   bubble.quantity++;
   bubble.array.push(
-    new Bubble(mouseX, mouseY, random(bubble.minSize, bubble.maxSize), 
-    bubble.alphaMin, bubble.alphaMax))
+    new Bubble(mouseX, mouseY, random(bubble.minSize, bubble.maxSize)))
 }
