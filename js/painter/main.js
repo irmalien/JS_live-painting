@@ -9,8 +9,8 @@ let count = 0;
 const bubble = {
   array: [],
   //OBJECT
-  quantity: 1,
-  minSize: 1,
+  quantity: 50,
+  minSize: 0.5,
   maxSize: 10,
   // roundness: 1,
   // minStroke: 1, 
@@ -30,7 +30,10 @@ const bubble = {
   movement: 3,
 };
 
-  
+let palettesData;
+let palette;
+let paletteArray = [];
+
 function relativeSize(){
   const relativeSize = canvasW/1000;
   bubble.minSize = bubble.minSize * relativeSize;
@@ -39,18 +42,41 @@ function relativeSize(){
 }
 
 function preload(){
-  img = loadImage('img/gustavs.jpg')
+  palettesData = loadJSON("data/palettes.json");
+  img = loadImage('img/gustavs.jpg');
+
+}
+
+function selectPalette(size){
+  let selectRand = floor(random(0, palettesData.palettes.length))
+  palette = palettesData.palettes[selectRand][0];
+
+  if (size > palettesData.palettes[selectRand].length){
+    size = palettesData.palettes[selectRand].length
+  };
+
+  for (let i=0; i<size; i++){
+    let hslNew = hexToHSL(palettesData.palettes[selectRand][i])
+    paletteArray.push(hslNew);
+  }
 }
 
 function setup(){
-  colorMode(HSB, 360, 100, 100, 100);
+  colorMode(HSL, 360, 100, 100, 100);
   createCanvas(canvasW, canvasH);
+  selectPalette(5);
   background(0, 0, 0);
 
 }
 
 
-function draw() {  
+function draw() {
+  //  count++;
+  // if (count == 50){
+  //   count =0;
+  //   background(0, 0, 0, 5);
+  // }
+
   if(bubble.array.length>bubble.quantity){
     bubble.array.splice(0, 1);
   }

@@ -1,6 +1,7 @@
 const color = [
-  //Purvitis
-  {palette: [
+
+  { name: "V.Purvitis, Spring landscape",
+    palette: [
     [0, 0, 100],
     [26, 13, 99],
     [345, 5, 92],
@@ -13,16 +14,16 @@ const color = [
     [356, 25, 75],
     [323, 11, 75],
     ]},
-  //greyscale
-  {palette: [
+  { name: "Greyscale",
+    palette: [
     [51, 11, 71],
     [51, 11, 46],
     [51, 11, 96],
     [51, 11, 21],
     [51, 11, 86],
     ]},
-  //2: Greyscale Orange
-  {palette: [
+  { name: "Greyscale with orange",
+    palette: [
     [207, 45, 25],
     [160, 24, 35],
     [76, 16, 65],
@@ -30,8 +31,8 @@ const color = [
     [20, 88, 96],
     [35, 15, 95],
     ]},
-  //3: Pollock nr5  
-  {palette: [
+  { name: "Jackson Pollock, Number 5",
+    palette: [
     [45, 65, 95],
     [360, 70, 40],
     [280, 20, 6],
@@ -39,8 +40,9 @@ const color = [
     [35, 15, 95],
     [355, 85, 65],
     ]},
-  //4: white  
-  {palette: [
+  { name: "White",
+    background: [0, 0, 0],
+    palette: [
     [0, 0, 100],
     ]}  
   ]

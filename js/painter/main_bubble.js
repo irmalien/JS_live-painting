@@ -2,7 +2,7 @@ class Bubble {
   constructor(_x, _y, _radius) {
     //TODO cleanUp variables!!!
     this.x = _x;
-    this.y = _y;
+    this.y = 0;
     this.radius = _radius;
     // this.diameter = this.radius*2;
     // this.roundness = bubble.roundness;
@@ -18,9 +18,9 @@ class Bubble {
     this.xoff2 = random(1000)
     this.xoff3 = random(1000)
     //NB Between 1(random) and 0(flat) 
-    this.increment1 = random(0.001, 0.005)
-    this.increment2 = random(0.001, 0.005)
-    this.increment3 = random(0.01, 0.005)
+    this.incrementVerySlow = random(0.0001, 0.0001)
+    this.incrementSlow = random(0.001, 0.005)
+    this.incrementNormal = random(0.01, 0.005)
     this.move1 = random(0.2);
     this.move2 = random(-0.2, 0.2);
 
@@ -29,7 +29,7 @@ class Bubble {
     this.type = this.selectType(0.5, 0.9, 1);
 
     //COLOR
-    this.colorScheme = color[3].palette;
+    this.colorScheme = paletteArray;
     this.randomColor = int(random(0, this.colorScheme.length));
 
     this.h = this.colorScheme[this.randomColor][0];
@@ -51,17 +51,17 @@ class Bubble {
   }
   //====MOVE===================
   move(){
-    this.xoff1 += this.increment1;
-    this.xoff2 += this.increment2;
-    this.xoff3 += this.increment3;
-    this.radius = this.changeRadius(this.type, bubble.minSize, bubble.maxSize, this.xoff3);
-    // this.x = this.moveDirection(this.x, this.radius, this.move2);
-    // this.y = this.moveDirection(this.y, this.radius, this.move2);
-    this.x = this.moveTremble(this.x, this.radius, this.move1);
-    this.y = this.moveTremble(this.y, this.radius, this.move1);
+    this.xoff1 += this.incrementVerySlow;
+    this.xoff2 += this.incrementVerySlow;
+    this.xoff3 += this.incrementNormal;
+    // this.radius = this.changeRadius(this.type, bubble.minSize, bubble.maxSize, this.xoff3);
+    // this.x = this.moveDirection(this.x, this.radius, 0);
+    // this.y = this.moveDirection(this.y, this.radius, this.move1);
+    // this.x = this.moveTremble(this.x, this.radius, this.move2);
+    // this.y = this.moveTremble(this.y, this.radius, this.move2);
     this.x = this.movePerlin(this.x, this.radius, -0.5, 0.5, this.xoff1);
     this.y = this.movePerlin(this.y, this.radius, -0.5, 0.5, this.xoff2);
-    this.edgeless(this.x, this.y);
+    this.edgeless();
   }
 
   changeRadius(type, minSize, maxSize, xoff){
@@ -95,27 +95,29 @@ class Bubble {
     return pos;
   };
 
-  edgeless(x, y){
-    if (x > width){x = 0};
-    if (x < 0){x = width};
-    if (y > height){y = 0};
-    if (y < 0){y = height};
+  edgeless(){
+    if (this.x > width){this.x = 0};
+    if (this.x < 0){this.x = width};
+    if (this.y > height){this.y = 0};
+    if (this.y < 0){this.y = height};
   }
 
   //====SHOW===================
   show(){
     // this.changeColor();
-    // stroke(this.h, this.s, this.l);
-    noStroke()
-    // strokeWeight(this.strokeWeight);
+    // stroke(0, 0, 0);
+    // noStroke()
+    // strokeWeight(0.5);
     // noFill();
-    this.colorShadesNoise();
+    // this.colorShadesNoise();
     // this.alphaShades();
     // this.colorImage();
-    fill(this.h_shade, this.s_shade, this.l_shade += random(-2, 2), this.a_shade)
+    fill(this.h_shade, this.s_shade, this.l_shade)
     // fill(255);
-    // var radius_local = map(this.l_shade, 30, 100, 0, 3)
+    // var radius_local = map(this.a, 30, 100, 0, 3)
     // this.radius = (this.radius+radius_local)/2
+    // this.radius = radius_local;
+    // console.log(this.radius)
     ellipse(this.x, this.y, this.radius, this.radius);
   }
 
@@ -171,10 +173,9 @@ class Bubble {
     var r = col[0];
     var g = col[1];
     var b = col[2];
-    var col2 = r+g+b
-    var col3 = col2/3
-    var l_shadeLocal = map(col3, 100, 255, 0, 100)
-    this.l_shade = (this.l_shade+l_shadeLocal)/2
+    var col2 = (r+g+b)/3
+    var l_shadeLocal = map(col2, 0, 255, 0, 100)
+    this.a = l_shadeLocal;
   }
 
 }
