@@ -1,16 +1,27 @@
 class Atom {
-  constructor(_x, _y, _atom) {
-    //TODO apvienot mainīgos objektā
-    // const {alphaMin, alphaMax} = bubble;
+  constructor(_x, _y, _atom) {    
+    //POSITION
     this.x = _x;
     this.y = _y;
 
+    //OBJECT
     this.sizeMin = _atom.sizeMin;
     this.sizeMax = _atom.sizeMax;
     this.sizeRand = _atom.sizeRand;
     this.size = random(_atom.sizeMin, _atom.sizeMax);
 
+    //COLOR
+    this.colArray = _atom.colArray;
+    this.colRand = int(random(0, this.colArray.length));
+    this.colH = this.colArray[this.colRand][0];
+    this.colS= this.colArray[this.colRand][1];
+    this.colL= this.colArray[this.colRand][2];
+    this.colA= random(_atom.colAlphaMin, _atom.colAlphaMax);
+    this.colH2;
+    this.colS2;
+    this.colL2;
 
+    //DYNAMICS
     this.movHor = _atom.movHor;
     this.movVer = _atom.movVer;
     this.movTremble = _atom.movTremble;
@@ -19,40 +30,23 @@ class Atom {
     this.movRandY = _atom.movRandY;
     this.movRandZ = _atom.movRandZ;
 
-    // this.strokeWeightMin;
-    // this.strokeWeightMax;
-
-    //MOVEMENT
+    //PERLIN
     this.xoffX = random(1000);
     this.xoffY = random(1000);
     this.xoffZ = random(1000);
     this.xoffSize = random(1000);
     this.xoffCol = random(1000);
 
-    //NB Between 1(random) and 0(flat) 
-    this.incrementVerySlow = random(0.0001, 0.0001)
-    this.incrementSlow = random(0.001, 0.005)
-    this.incrementNormal = random(0.01, 0.05)
+    // this.strokeWeightMin;
+    // this.strokeWeightMax;
 
     //OBJECT TYPE
     //TODO solve how to apply in different situations
     this.type = this.selectType(0.5, 0.9, 1);
 
-    //COLOR
-    this.colorScheme = paletteArray;
-    this.randomColor = int(random(0, this.colorScheme.length));
-
-    this.h = this.colorScheme[this.randomColor][0];
-    this.s = this.colorScheme[this.randomColor][1];
-    this.l = this.colorScheme[this.randomColor][2];
-    this.h_shade = this.h;
-    this.s_shade = this.s;
-    this.l_shade = this.l;
-    this.alphaMin = _atom.alphaMin;
-    this.alphaMax = _atom.alphaMax;
-    this.a = random(this.alphaMin, this.alphaMax);
   }
 
+  //====INITIALIZE===================
   selectType(p1, p2, pTotal){
     const probability = random(pTotal);
     let variation = null;
@@ -61,6 +55,8 @@ class Atom {
     else {variation = 'C'}
     return variation;
   }
+
+
   //====MOVE===================
 
   resize(){
@@ -82,7 +78,9 @@ class Atom {
     this.x = this.movePerlin(this.x, this.size, -this.movSpeed, this.movSpeed, this.xoffX);
     this.y = this.movePerlin(this.y, this.size, -this.movSpeed, this.movSpeed, this.xoffY);
 
-    this.edgeless();
+    this.mirrorXY();
+
+    // this.edgeless();
   }
 
   changeRadius(type, minSize, maxSize, xoff){
@@ -123,8 +121,48 @@ class Atom {
     if (this.y < 0){this.y = height};
   }
 
+  mirrorX(){
+    let x2;
+    let fullSize = width;
+    let halfSize = width;
+    let remainSize = fullSize-halfSize;
+
+    if (this.x > halfSize){this.x = 0};
+    if (this.x < 0){this.x = halfSize};
+    if (this.y > height){this.y = 0};
+    if (this.y < 0){this.y = height};
+    this.show(this.x, this.y);
+    x2 = map(this.x, 0, halfSize, fullSize, remainSize);
+    this.show(x2, this.y);
+
+  }
+
+  mirrorXY(){
+    let x2;
+    let fullX = width;
+    let halfX = width;
+    let remX = halfX-halfX;
+    let y2;
+    let fullY = height;
+    let halfY = height;
+    let remY = fullY-halfY;
+
+    if (this.x > halfX){this.x = 0};
+    if (this.x < 0){this.x = halfX};
+    if (this.y > halfY){this.y = 0};
+    if (this.y < 0){this.y = halfY};
+    x2 = map(this.x, 0, fullX, halfX, remX);
+    y2 = map(this.y, 0, fullY, halfY, remY);
+
+    this.show(this.x, this.y);
+    this.show(x2, this.y);
+    this.show(this.x, y2);
+    this.show(x2, y2);
+
+  }
+
   //====SHOW===================
-  show(){
+  show(_posX, _posY){
     // changeColorRandom();
     // stroke(0, 0, 0);
     noStroke()
@@ -133,58 +171,57 @@ class Atom {
     // this.colorShadesNoise();
     // this.alphaShades();
     // this.colorImage();
-    // this.h_shade++;
-    fill(this.h, this.s_shade, this.l_shade)
+    fill(this.colH, this.colS, this.colL)
 
     // var radius_local = map(this.a, 30, 100, 0, 3)
     // this.size = (this.size+radius_local)/2
     // this.size = radius_local;
-    ellipse(this.x, this.y, this.size, this.size);
+    ellipse(_posX, _posY, this.size, this.size);
   }
 
 
   // alphaShades(){
-  //   this.h = map(noise(this.xoffZ), 0, 1, bubble.alphaMin, bubble.alphaMax);
+  //   this.colH = map(noise(this.xoffZ), 0, 1, bubble.alphaMin, bubble.alphaMax);
   // }
 
-  colorShadesNoise(){
-    this.h_shade = map(noise(this.xoffX), 0, 1, this.h-20, this.h+20);
-    this.s_shade = map(noise(this.xoffY), 0, 1, this.s-10, this.s+10);
-    this.l_shade = map(noise(this.xoffZ), 0, 1, this.l-10, this.l+10);
+  // colorShadesNoise(){
+  //   this.colH2 = map(noise(this.xoffX), 0, 1, this.colH-20, this.colH+20);
+  //   this.colS2 = map(noise(this.xoffY), 0, 1, this.s-10, this.s+10);
+  //   this.colL2 = map(noise(this.xoffZ), 0, 1, this.l-10, this.l+10);
     
-    if (this.h_shade > 360) this.h_shade = 0;
-    if (this.h_shade < 0) this.h_shade = 360;
+  //   if (this.colH2 > 360) this.colH2 = 0;
+  //   if (this.colH2 < 0) this.colH2 = 360;
 
-    if (this.s > 100) this.s = 100;
-    if (this.s < 0) this.s = 0;
+  //   if (this.colS> 100) this.colS= 100;
+  //   if (this.colS< 0) this.colS= 0;
     
-    if (this.l > 100) this.l = 100;
-    if (this.l < 0) this.l = 0;
-  }
+  //   if (this.colL> 100) this.colL= 100;
+  //   if (this.colL< 0) this.colL= 0;
+  // }
 
-  colorShades(){
-    this.h += random(-1, 1);
-    this.s += random(-1, 1);
-    this.l += random(-1, 1);
+  // colorShades(){
+  //   this.colH += random(-1, 1);
+  //   this.colS+= random(-1, 1);
+  //   this.colL+= random(-1, 1);
     
-    if (this.h > 360) this.h = 0;
-    if (this.h < 0) this.h = 360;
+  //   if (this.colH > 360) this.colH = 0;
+  //   if (this.colH < 0) this.colH = 360;
 
-    if (this.s > 90) this.s = 90;
-    if (this.s < 0) this.s = 0;
+  //   if (this.colS> 90) this.colS= 90;
+  //   if (this.colS< 0) this.colS= 0;
     
-    if (this.l > 90) this.l = 90;
-    if (this.l < 15) this.l = 15;
-  }
+  //   if (this.colL> 90) this.colL= 90;
+  //   if (this.colL< 15) this.colL= 15;
+  // }
 
-  colorImage(){
-    var col = img.get(this.x, this.y);
-    var r = col[0];
-    var g = col[1];
-    var b = col[2];
-    var col2 = (r+g+b)/3
-    var l_shadeLocal = map(col2, 0, 255, 0, 100)
-    this.a = l_shadeLocal;
-  }
+  // colorImage(){
+  //   var col = img.get(this.x, this.y);
+  //   var r = col[0];
+  //   var g = col[1];
+  //   var b = col[2];
+  //   var col2 = (r+g+b)/3
+  //   var l_shadeLocal = map(col2, 0, 255, 0, 100)
+  //   this.colA= l_shadeLocal;
+  // }
 
 }

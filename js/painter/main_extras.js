@@ -1,3 +1,6 @@
+    //TODO apvienot mainīgos objektā
+    // const {alphaMin, alphaMax} = bubble;
+
 function filters(){
   // count++;
   // if (count == 300){

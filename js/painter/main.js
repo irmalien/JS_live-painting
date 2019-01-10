@@ -6,7 +6,8 @@ const canvasH = windowHeight   //3737 //667 //2616; //windowHeight //1308
 
 let count = 0;
 let atomArray = [];
-let atomQuantity = 10;
+let atomQuantity = 25;
+let colorsData; //imported json data
 
 // const atomQuantity2 ={
 //   value: 10,
@@ -18,39 +19,36 @@ let atomQuantity = 10;
 const atom = {
 
   //OBJECT
+  //lifetime: 0 = infinity?
+
   sizeMin: 0.5,
-  sizeMax: 10,
+  sizeMax: 5,
   sizeRand: 0.05,
 
   // roundness: 1,
+  // rotationMin: 0,
+  // rotationMax: 360,
 
   // minStroke: 1, 
   // maxStroke: 10, 
 
-  // rotationMin: 0,
-  // rotationMax: 360,
+
 
   //COLORS
-  // hue: 0, 
-  // saturation: 0,
-  // lightness: 0,
-  alphaMin: 0.9,
-  alphaMax: 1.0,
+  colArray: [],
+  colAlphaMin: 0.9,
+  colAlphaMax: 1.0,
 
   //DYNAMICS (relative to atom radius)
-
-  movVer: 0,
-  movHor: 0,
+  movVer: 0.025,
+  movHor: -0.05,
   movTremble: 1,
-  movSpeed: 0.75,
-  movRandX: 0.005,
-  movRandY: 0.005,
+  movSpeed: 0.5,
+  movRandX: 0.05,
+  movRandY: 0.05,
   movRandZ: 0.5,
 };
 
-let palettesData; //imported json data
-let palette;
-let paletteArray = [];
 
 // function relativeSize(){
 //   const relativeSize = canvasW/1000;
@@ -60,32 +58,31 @@ let paletteArray = [];
 // }
 
 function preload(){
-  palettesData = loadJSON("data/palettes.json");
+  colorsData = loadJSON("data/palettes.json");
   img = loadImage('img/gustavs.jpg');
 
 }
 
 function selectPalette(size, white, black){
-  let selectRand = floor(random(0, palettesData.palettes.length))
+  let selectRand = floor(random(0, colorsData.palettes.length))
 
-  if (size > palettesData.palettes[selectRand].length){
-    size = palettesData.palettes[selectRand].length
+  if (size > colorsData.palettes[selectRand].length){
+    size = colorsData.palettes[selectRand].length
   };
 
   for (let i=0; i<size; i++){
-    let hslNew = hexToHSL(palettesData.palettes[selectRand][i])
-    paletteArray.push(hslNew);
-    
+    let hslNew = hexToHSL(colorsData.palettes[selectRand][i])
+    atom.colArray.push(hslNew);
   }
 
   if (white){
     let colorTemp = [0, 0, 100];
-    paletteArray.push(colorTemp);
+    atom.colArray.push(colorTemp);
   };
 
   if (black){
     let colorTemp = [0, 0, 0];
-    paletteArray.push(colorTemp);
+    atom.colArray.push(colorTemp);
   };
 }
 
@@ -106,7 +103,6 @@ function draw() {
   //   background(0, 0, 0, 5);
   // }
 
-
   if(atomArray.length>atom){
     atomArray.splice(0, 1);
   }
@@ -114,13 +110,14 @@ function draw() {
     atomArray.push(
       new Atom(random(0, width), random(0, height), atom))
   }
-
   for(i = 0; i < atomArray.length; i++ ){
     atomArray[i].resize()
     atomArray[i].move();
-    atomArray[i].show();
+    // atomArray[i].show();
   }
 }
+
+
 
 let mouseX1;
 let mouseY1;
@@ -148,6 +145,11 @@ function calcDirection() {
   //map(col2, 0, 255, 0, 100)
 }
 
+
+
+function selectColor(){
+
+}
 
 // function mouseDragged() {
 //   atomQuantity++;
