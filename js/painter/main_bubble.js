@@ -5,6 +5,7 @@ class Atom {
     this.y = _y;
 
     //OBJECT
+    this.lifespan = _atom.lifespan;
     this.sizeMin = _atom.sizeMin;
     this.sizeMax = _atom.sizeMax;
     this.sizeRand = _atom.sizeRand;
@@ -44,6 +45,9 @@ class Atom {
     //TODO solve how to apply in different situations
     this.type = this.selectType(0.5, 0.9, 1);
 
+    //EXTRAS
+    count=1
+
   }
 
   //====INITIALIZE===================
@@ -58,6 +62,17 @@ class Atom {
 
 
   //====MOVE===================
+
+  count(id){
+    count++;
+    if (count>=this.lifespan){
+      return false;
+    }
+    else{
+      return true
+    }
+
+  }
 
   resize(){
     this.xoffSize += this.sizeRand;
@@ -78,9 +93,10 @@ class Atom {
     this.x = this.movePerlin(this.x, this.size, -this.movSpeed, this.movSpeed, this.xoffX);
     this.y = this.movePerlin(this.y, this.size, -this.movSpeed, this.movSpeed, this.xoffY);
 
-    this.mirrorXY();
+    // this.mirrorXY();
 
-    // this.edgeless();
+    this.edgeless();
+    this.show(this.x, this.y)
   }
 
   changeRadius(type, minSize, maxSize, xoff){
@@ -134,7 +150,6 @@ class Atom {
     this.show(this.x, this.y);
     x2 = map(this.x, 0, halfSize, fullSize, remainSize);
     this.show(x2, this.y);
-
   }
 
   mirrorXY(){

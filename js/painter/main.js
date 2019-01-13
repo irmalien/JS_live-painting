@@ -6,7 +6,7 @@ const canvasH = windowHeight   //3737 //667 //2616; //windowHeight //1308
 
 let count = 0;
 let atomArray = [];
-let atomQuantity = 25;
+let atomQuantity = 0;
 let colorsData; //imported json data
 
 // const atomQuantity2 ={
@@ -20,9 +20,10 @@ const atom = {
 
   //OBJECT
   //lifetime: 0 = infinity?
+  lifespan: 100,
 
-  sizeMin: 0.5,
-  sizeMax: 5,
+  sizeMin: 3,
+  sizeMax: 3,
   sizeRand: 0.05,
 
   // roundness: 1,
@@ -40,13 +41,13 @@ const atom = {
   colAlphaMax: 1.0,
 
   //DYNAMICS (relative to atom radius)
-  movVer: 0.025,
-  movHor: -0.05,
-  movTremble: 1,
+  movVer: 0.5,
+  movHor: 0.1,
+  movTremble: 0.1,
   movSpeed: 0.5,
-  movRandX: 0.05,
-  movRandY: 0.05,
-  movRandZ: 0.5,
+  movRandX: 0.0,
+  movRandY: 0.5,
+  movRandZ: 0.9,
 };
 
 
@@ -97,11 +98,16 @@ function setup(){
   // requestAnimationFrame(draw);
 
 function draw() {
+  // translate(width/2, height/2);
   //  count++;
   // if (count == 10){
   //   count =0;
   //   background(0, 0, 0, 5);
   // }
+
+
+  const tester = new Atom(random(0, width), random(0, height), atom);
+  tester.type = B;
 
   if(atomArray.length>atom){
     atomArray.splice(0, 1);
@@ -110,9 +116,17 @@ function draw() {
     atomArray.push(
       new Atom(random(0, width), random(0, height), atom))
   }
-  for(i = 0; i < atomArray.length; i++ ){
-    atomArray[i].resize()
-    atomArray[i].move();
+  for(i = atomArray.length-1; i >= 0; i-- ){
+    if (atomArray[i].count(i) == false){
+      // atomArray[i] = new Atom(random(0, width), random(0, height), atom);
+      atomArray.splice(i, 1);
+    }
+    else {
+      atomArray[i].resize();
+      atomArray[i].move();
+    }
+
+
     // atomArray[i].show();
   }
 }
