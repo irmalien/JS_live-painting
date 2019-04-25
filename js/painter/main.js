@@ -9,6 +9,9 @@ let atomArray = [];
 let atomQuantity = 0;
 let colorsData; //imported json data
 
+var texte;
+let letstry;
+
 // const atomQuantity2 ={
 //   value: 10,
 
@@ -87,12 +90,13 @@ function selectPalette(size, white, black){
   };
 }
 
+
+
 function setup(){
   colorMode(HSL, 360, 100, 100, 100);
   createCanvas(canvasW, canvasH);
   selectPalette(5, true, false);
   background(0, 0, 0);
-  // setInterval( ()=> { draw() }, 100 );
 }
 
   // requestAnimationFrame(draw);
@@ -106,8 +110,6 @@ function draw() {
   // }
 
 
-  const tester = new Atom(random(0, width), random(0, height), atom);
-  tester.type = B;
 
   if(atomArray.length>atom){
     atomArray.splice(0, 1);
